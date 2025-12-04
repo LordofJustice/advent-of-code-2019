@@ -71,7 +71,10 @@ const intersectionPoint = (wire1, wire2) => {
   return points;
 };
 
-const intersectionPoints = intersectionPoint(path(firstWirePath), path(secondWirePath));
+const wire1Path = path(firstWirePath)
+const wire2Path = path(secondWirePath)
+
+const intersectionPoints = intersectionPoint(wire1Path, wire2Path);
 
 const ManhattanDistance = ([x1, y1], [x2, y2]) => {
   return Math.abs(x2 - x1) + Math.abs(y2 - y1);
@@ -79,7 +82,18 @@ const ManhattanDistance = ([x1, y1], [x2, y2]) => {
 
 const allDistance = intersectionPoints.map(point => ManhattanDistance([0,0],point)).sort((a,b) => b - a);
 
-console.log(path(firstWirePath))
-console.log(path(secondWirePath))
-console.log(intersectionPoints)
-console.log(allDistance);
+//////////////PART 2///////////
+
+const distanceFromOrgin = (nestedArray,array) => {
+  for (let index = 0; index < nestedArray.length; index++) {
+    if (isArrayEqual(nestedArray[index],array)) return index + 1;
+  }
+}
+
+const totalDistances = (intersectionPoints,wire1Path,wire2Path) => {
+  return intersectionPoints.map((point) => {
+    return distanceFromOrgin(wire1Path,point) + distanceFromOrgin(wire2Path,point);
+  }).sort((a,b) => a - b)
+}
+
+console.log(totalDistances(intersectionPoints,wire1Path,wire2Path));
